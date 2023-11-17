@@ -53,7 +53,7 @@ func main() {
 
     var response_body string
     if respond_with_content {
-        response_body = strings.Split(target, "/")[2]
+        response_body = strings.Split(target, "/echo/")[1]
     } else {
         response_body = ""
     }
