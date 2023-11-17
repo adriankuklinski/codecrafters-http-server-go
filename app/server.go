@@ -42,11 +42,10 @@ func main() {
 
     var target string
     _, target, _ = fields[0], fields[1], fields[2]
-    parsed_target := strings.Split(target, "/")
     respond_with_content := len(strings.Split(target, "/echo/")) > 1
 
     var status_line string
-    if target == "/") || respond_with_content {
+    if target == "/" || respond_with_content {
         status_line = "HTTP/1.1 200 OK\r\n"
     } else {
         status_line = "HTTP/1.1 404 Not Found\r\n"
