@@ -60,7 +60,7 @@ func main() {
     }
 
     header_string := strings.Join(headers, "\r\n")
-    response := fmt.Sprintf("%s\n\r%s\n\r%s", status_line,header_string, response_body)
+    response := fmt.Sprintf("%s\r\n%s\r\n%s", status_line,header_string, response_body)
 
     _, err = conn.Write([]byte(response))
     if err != nil {
