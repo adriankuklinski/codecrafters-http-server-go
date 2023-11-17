@@ -46,9 +46,9 @@ func main() {
 
     var status_line string
     if target == "/" || respond_with_content {
-        status_line = "HTTP/1.1 200 OK"
+        status_line = "HTTP/1.1 200 OK\r\n"
     } else {
-        status_line = "HTTP/1.1 404 Not Found"
+        status_line = "HTTP/1.1 404 Not Found\r\n"
     }
 
     var response_body string
