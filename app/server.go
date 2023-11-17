@@ -45,9 +45,9 @@ func main() {
 
     var status_line string
     if len(target) > 0 && rune(target[0]) == '/' {
-        status_line = "HTTP/1.1 200 OK"
+        status_line = "HTTP/1.1 200 OK\r\n"
     } else {
-        status_line = "HTTP/1.1 404 Not Found"
+        status_line = "HTTP/1.1 404 Not Found\r\n"
     }
 
     parsed_target := strings.Split(target, "/")
