@@ -1,10 +1,11 @@
 package main
 
 import (
-    "bufio"
+	"bufio"
 	"fmt"
 	"net"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -24,13 +25,30 @@ func main() {
 
     reader := bufio.NewReader(conn)
     buffer := make([]byte, 1024)
-    _, err = reader.Read(buffer)
+
+    var n int
+    n, err = reader.Read(buffer)
     if err != nil {
 		fmt.Println(err)
         os.Exit(1)
     }
 
-    response := "HTTP/1.1 200 OK\r\n\r\n"
+    http_request := strings.Split(string(buffer[:n]), "\r\n")
+    start_line := http_request[0]
+    fields := strings.Fields(start_line)
+    if len(fields) < 3 {
+        fmt.Println("invalid start line")
+    }
+
+    _, target, _ := fields[0], fields[1], fields[2]
+
+    var response string
+    if target == "/" {
+        response = "HTTP/1.1 200 OK\r\n\r\n"
+    } else {
+        response= "HTTP/1.1 404 Not Found\r\n\r\n"
+    }
+
     _, err = conn.Write([]byte(response))
     if err != nil {
         fmt.Println("Error writing response:", err)
