@@ -43,15 +43,21 @@ func main() {
     var target string
     _, target, _ = fields[0], fields[1], fields[2]
     parsed_target := strings.Split(target, "/")
+    respond_with_content := len(strings.Split(target, "/echo/")) > 1
 
     var status_line string
-    if target == "/" || parsed_target[1] == "echo" {
+    if (len(target) > 0 && parsed_target[0] == "") || respond_with_content {
         status_line = "HTTP/1.1 200 OK\r\n"
     } else {
         status_line = "HTTP/1.1 404 Not Found\r\n"
     }
 
-    response_body := parsed_target[len(parsed_target) - 1]
+    var response_body string
+    if respond_with_content {
+        response_body = strings.Split(target, "/echo/")[1]
+    } else {
+        response_body = ""
+    }
 
     content_length := len(response_body)
     headers := []string{
