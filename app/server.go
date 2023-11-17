@@ -40,14 +40,27 @@ func main() {
         fmt.Println("invalid start line")
     }
 
-    _, target, _ := fields[0], fields[1], fields[2]
+    var target string
+    _, target, _ = fields[0], fields[1], fields[2]
 
-    var response string
-    if target == "/" {
-        response = "HTTP/1.1 200 OK\r\n\r\n"
+    var status_line string
+    if len(target) > 0 && rune(target[0]) == '/' {
+        status_line = "HTTP/1.1 200 OK"
     } else {
-        response= "HTTP/1.1 404 Not Found\r\n\r\n"
+        status_line = "HTTP/1.1 404 Not Found"
     }
+
+    parsed_target := strings.Split(target, "/")
+    response_body := parsed_target[len(parsed_target) - 1]
+
+    content_length := len(response_body)
+    headers := []string{
+        "Content-Type: text/plain",
+        fmt.Sprintf("Content-Length: %d", content_length),
+    }
+
+    header_string := strings.Join(headers, "\r\n")
+    response := fmt.Sprintf("%s\n\r%s\n\r%s", status_line,header_string, response_body)
 
     _, err = conn.Write([]byte(response))
     if err != nil {
